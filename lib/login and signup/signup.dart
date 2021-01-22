@@ -36,7 +36,7 @@ class _SignUpState extends State<SignUp> {
       cursorColor: Theme.of(context).accentColor,
       autofocus: false,
       decoration: InputDecoration(
-        icon: Icon(Icons.accessibility),
+        suffixIcon: Icon(Icons.insert_emoticon),
         hintText: 'Username',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
@@ -48,7 +48,7 @@ class _SignUpState extends State<SignUp> {
       cursorColor: Theme.of(context).accentColor,
       autofocus: false,
       decoration: InputDecoration(
-        icon: Icon(Icons.email_rounded),
+        suffixIcon: Icon(Icons.alternate_email),
         hintText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
@@ -60,7 +60,7 @@ class _SignUpState extends State<SignUp> {
       cursorColor: Theme.of(context).accentColor,
       obscureText: true,
       decoration: InputDecoration(
-        icon: Icon(Icons.vpn_key_rounded),
+        suffixIcon: Icon(Icons.vpn_key),
         hintText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),

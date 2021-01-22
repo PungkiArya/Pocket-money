@@ -22,6 +22,13 @@ final text = Text(
 );
 
 class _LoginPageState extends State<LoginPage> {
+  bool _secureText = true;
+  showHide() {
+    setState(() {
+      _secureText = !_secureText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final logo = Hero(
@@ -33,10 +40,16 @@ class _LoginPageState extends State<LoginPage> {
         ));
 
     final email = TextFormField(
+      // ignore: missing_return
+      validator: (e) {
+        if (e.isEmpty) {
+          return "Please insert email";
+        }
+      },
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       decoration: InputDecoration(
-        icon: Icon(Icons.email_rounded),
+        suffixIcon: Icon(Icons.email_rounded),
         hintText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
@@ -45,9 +58,12 @@ class _LoginPageState extends State<LoginPage> {
 
     final password = TextFormField(
       autofocus: false,
-      obscureText: true,
+      obscureText: _secureText,
       decoration: InputDecoration(
-        icon: Icon(Icons.vpn_key_rounded),
+        suffixIcon: IconButton(
+          onPressed: showHide,
+          icon: Icon(_secureText ? Icons.visibility_off : Icons.visibility),
+        ),
         hintText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),

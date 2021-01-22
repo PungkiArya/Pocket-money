@@ -30,24 +30,28 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         body: _children[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.amberAccent,
-          selectedItemColor: Colors.lightBlue.shade700,
+          selectedItemColor: Colors.white,
           unselectedItemColor: Colors.blueGrey,
           onTap: onTappedBar,
           currentIndex: _currentIndex,
           items: [
             BottomNavigationBarItem(
+                backgroundColor: Colors.lightBlueAccent,
                 icon: new Icon(Icons.home),
                 // ignore: deprecated_member_use
                 title: new Text("Home")),
             BottomNavigationBarItem(
+                backgroundColor: Colors.amberAccent,
                 icon: new Icon(Icons.note),
                 // ignore: deprecated_member_use
                 title: new Text("Note")),
             BottomNavigationBarItem(
+                backgroundColor: Colors.green.shade500,
                 icon: new Icon(Icons.event_note_rounded),
                 // ignore: deprecated_member_use
                 title: new Text("Event")),
             BottomNavigationBarItem(
+                backgroundColor: Colors.redAccent,
                 icon: new Icon(Icons.account_circle),
                 // ignore: deprecated_member_use
                 title: new Text("Account")),

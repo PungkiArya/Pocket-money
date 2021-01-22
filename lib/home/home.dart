@@ -12,9 +12,7 @@ class _HomePageState extends State<HomePage> {
       body: new Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(
-                    "https://fsb.zobj.net/crop.php?r=Jan4E86f9qXhPsy_RnWttwp7zqjTopMQPoMUkcWKGc7cbL_O2oc12-aGu-XGvw6PzBsyX3KrUWSKnju9jh2Fa6smXaYGw1tgx6PVZ94xIqx7_Nbut7M5wB6HOdkBFRvge5zGihMUIHfzMPIG"),
-                fit: BoxFit.cover)),
+                image: AssetImage("images/Quby.jpg"), fit: BoxFit.cover)),
         child: Center(
           child: Text(
             "Homepage",
