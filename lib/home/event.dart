@@ -1,100 +1,123 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:i_rich/crud/todo.dart';
+import 'package:i_rich/crud/database_helper.dart';
+import 'todo_detail.dart';
+import 'package:sqflite/sqflite.dart';
 
-class CalendarApp extends StatelessWidget {
+class TodoList extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: 'Calendar Demo', home: EventPage());
+  State<StatefulWidget> createState() {
+    return TodoListState();
   }
 }
 
-class EventPage extends StatefulWidget {
-  const EventPage({Key key}) : super(key: key);
-  @override
-  _EventState createState() => _EventState();
-}
-
-class _EventState extends State<EventPage> {
-  List<Meeting> meetings;
+class TodoListState extends State<TodoList> {
+  DatabaseHelper databaseHelper = DatabaseHelper();
+  List<Todo> todoList;
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SfCalendar(
-        view: CalendarView.schedule,
-        scheduleViewSettings: ScheduleViewSettings(
-          appointmentItemHeight: 70,
-        ),
+    if (todoList == null) {
+      todoList = List<Todo>();
+      updateListView();
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Todos'),
+      ),
+      body: getTodoListView(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          debugPrint('FAB clicked');
+          navigateToDetail(Todo('', '', ''), 'Add Todo');
+        },
+        tooltip: 'Add Todo',
+        child: Icon(Icons.add),
       ),
     );
   }
 
-  List<Meeting> _getDataSource() {
-    meetings = <Meeting>[];
-    final DateTime today = DateTime.now();
-    final DateTime startTime =
-        DateTime(today.year, today.month, today.day, 9, 0, 0);
-    final DateTime endTime = startTime.add(const Duration(hours: 2));
-    meetings.add(Meeting(
-        'Conference', startTime, endTime, const Color(0xFF0F8644), false));
-    return meetings;
-  }
-}
-
-/// An object to set the appointment collection data source to calendar, which
-/// used to map the custom appointment data to the calendar appointment, and
-/// allows to add, remove or reset the appointment collection.
-class MeetingDataSource extends CalendarDataSource {
-  /// Creates a meeting data source, which used to set the appointment
-  /// collection to the calendar
-  MeetingDataSource(List<Meeting> source) {
-    appointments = source;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return appointments[index].from;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return appointments[index].to;
-  }
-
-  @override
-  String getSubject(int index) {
-    return appointments[index].eventName;
-  }
-
-  @override
-  Color getColor(int index) {
-    return appointments[index].background;
+  ListView getTodoListView() {
+    return ListView.builder(
+      itemCount: count,
+      itemBuilder: (BuildContext context, int position) {
+        return Card(
+          color: Colors.white,
+          elevation: 2.0,
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Colors.amber,
+              child: Text(getFirstLetter(this.todoList[position].title),
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            title: Text(this.todoList[position].title,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(this.todoList[position].description),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                  onTap: () {
+                    _delete(context, todoList[position]);
+                  },
+                ),
+              ],
+            ),
+            onTap: () {
+              debugPrint("ListTile Tapped");
+              navigateToDetail(this.todoList[position], 'Edit Todo');
+            },
+          ),
+        );
+      },
+    );
   }
 
-  @override
-  bool isAllDay(int index) {
-    return appointments[index].isAllDay;
+  getFirstLetter(String title) {
+    return title.substring(0, 2);
   }
-}
 
-/// Custom business object class which contains properties to hold the detailed
-/// information about the event data which will be rendered in calendar.
-class Meeting {
-  /// Creates a meeting class with required details.
-  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+  void _delete(BuildContext context, Todo todo) async {
+    int result = await databaseHelper.deleteTodo(todo.id);
+    if (result != 0) {
+      _showSnackBar(context, 'Todo Deleted Successfully');
+      updateListView();
+    }
+  }
 
-  /// Event name which is equivalent to subject property of [Appointment].
-  String eventName;
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
 
-  /// From which is equivalent to start time property of [Appointment].
-  DateTime from;
+  void navigateToDetail(Todo todo, String title) async {
+    bool result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return TodoDetail(todo, title);
+    }));
 
-  /// To which is equivalent to end time property of [Appointment].
-  DateTime to;
+    if (result == true) {
+      updateListView();
+    }
+  }
 
-  /// Background which is equivalent to color property of [Appointment].
-  Color background;
-
-  /// IsAllDay which is equivalent to isAllDay property of [Appointment].
-  bool isAllDay;
+  void updateListView() {
+    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Todo>> todoListFuture = databaseHelper.getTodoList();
+      todoListFuture.then((todoList) {
+        setState(() {
+          this.todoList = todoList;
+          this.count = todoList.length;
+        });
+      });
+    });
+  }
 }

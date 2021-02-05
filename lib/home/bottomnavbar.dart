@@ -14,7 +14,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   final List<Widget> _children = [
     HomePage(),
     NotePage(),
-    EventPage(),
+    TodoList(),
     AccountPage()
   ];
 

@@ -38,6 +38,9 @@ dependencies:
   shared_preferences: ^0.5.12+4
   syncfusion_flutter_calendar: ^18.4.35
   table_calendar: ^2.3.3
+  sqflite: any
+  path_provider: any
+  intl: ^0.15.7
 
 dev_dependencies:
   flutter_test:
