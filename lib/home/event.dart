@@ -25,16 +25,13 @@ class TodoListState extends State<TodoList> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Todos'),
-      ),
       body: getTodoListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           debugPrint('FAB clicked');
-          navigateToDetail(Todo('', '', ''), 'Add Todo');
+          navigateToDetail(Todo('', '', ''), 'Tambah Jadwal');
         },
-        tooltip: 'Add Todo',
+        tooltip: 'Tambah Jadwal',
         child: Icon(Icons.add),
       ),
     );
@@ -72,7 +69,7 @@ class TodoListState extends State<TodoList> {
             ),
             onTap: () {
               debugPrint("ListTile Tapped");
-              navigateToDetail(this.todoList[position], 'Edit Todo');
+              navigateToDetail(this.todoList[position], 'Edit Jadwal');
             },
           ),
         );
@@ -87,7 +84,7 @@ class TodoListState extends State<TodoList> {
   void _delete(BuildContext context, Todo todo) async {
     int result = await databaseHelper.deleteTodo(todo.id);
     if (result != 0) {
-      _showSnackBar(context, 'Todo Deleted Successfully');
+      _showSnackBar(context, 'Jadwal Berhasil Dihapus');
       updateListView();
     }
   }

@@ -42,11 +42,6 @@ class TodoDetailState extends State<TodoDetail> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(appBarTitle),
-            leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  moveToLastScreen();
-                }),
           ),
           body: Padding(
             padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
@@ -62,7 +57,7 @@ class TodoDetailState extends State<TodoDetail> {
                       updateTitle();
                     },
                     decoration: InputDecoration(
-                        labelText: 'Title',
+                        labelText: 'Nama Jadwal',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0))),
@@ -78,7 +73,7 @@ class TodoDetailState extends State<TodoDetail> {
                       updateDescription();
                     },
                     decoration: InputDecoration(
-                        labelText: 'Description',
+                        labelText: 'Deskripsi',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0))),
@@ -93,12 +88,12 @@ class TodoDetailState extends State<TodoDetail> {
                           color: Theme.of(context).primaryColorDark,
                           textColor: Theme.of(context).primaryColorLight,
                           child: Text(
-                            'Save',
+                            'Simpan',
                             textScaleFactor: 1.5,
                           ),
                           onPressed: () {
                             setState(() {
-                              debugPrint("Save button clicked");
+                              debugPrint("Tombol Simpan Ditekan");
                               _save();
                             });
                           },
@@ -112,12 +107,12 @@ class TodoDetailState extends State<TodoDetail> {
                           color: Theme.of(context).primaryColorDark,
                           textColor: Theme.of(context).primaryColorLight,
                           child: Text(
-                            'Delete',
+                            'Hapus',
                             textScaleFactor: 1.5,
                           ),
                           onPressed: () {
                             setState(() {
-                              debugPrint("Delete button clicked");
+                              debugPrint("Tombol Hapus Ditekan");
                               _delete();
                             });
                           },
@@ -162,7 +157,7 @@ class TodoDetailState extends State<TodoDetail> {
 
     if (result != 0) {
       // Success
-      _showAlertDialog('Status', 'Todo Saved Successfully');
+      _showAlertDialog('Status', 'Jadwal Berhasil Disimpan');
     } else {
       // Failure
       _showAlertDialog('Status', 'Problem Saving Todo');
@@ -173,13 +168,13 @@ class TodoDetailState extends State<TodoDetail> {
     moveToLastScreen();
 
     if (todo.id == null) {
-      _showAlertDialog('Status', 'No Todo was deleted');
+      _showAlertDialog('Status', 'Tidak Ada Jadwal Yang Terhapus');
       return;
     }
 
     int result = await helper.deleteTodo(todo.id);
     if (result != 0) {
-      _showAlertDialog('Status', 'Todo Deleted Successfully');
+      _showAlertDialog('Status', 'Jadwal Berhasil Dihapus');
     } else {
       _showAlertDialog('Status', 'Error Occured while Deleting Todo');
     }
